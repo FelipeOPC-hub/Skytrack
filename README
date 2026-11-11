@@ -1,0 +1,90 @@
+
+# ✈️ SkyTrack Airlines - Control Panel
+
+### 📌 Descripción
+Aplicación integral de **Gestión de Vuelos** que permite administrar operaciones de múltiples aerolíneas, con foco principal en la flota de **SkyTrack**. El sistema utiliza un backend modular y un frontend moderno para ofrecer una gestión robusta de vuelos, tripulación y aeronaves, aplicando validaciones estrictas de negocio.
+
+---
+
+## 🛠️ Tecnologías Utilizadas
+
+### **Backend (Microservice Vuelos)**
+* **NestJS v11**: Framework principal para una arquitectura escalable.
+* **MongoDB / Mongoose v8**: Base de Datos NoSQL para persistencia de datos.
+* **RxJS & TypeScript**: Para programación reactiva y tipado fuerte.
+* **Jest**: Suite de pruebas unitarias para lógica de negocio.
+
+### **Frontend (Control Tower)**
+* **React + Vite**: Entorno de desarrollo rápido y eficiente.
+* **Tailwind CSS**: Framework de estilos para una interfaz moderna y fluida.
+* **Axios**: Cliente HTTP para consumo de APIs REST.
+* **Cypress**: Framework de automatización para pruebas End-to-End (E2E).
+
+---
+
+## ⚙️ Estructura del Backend (API REST)
+
+| Método | Ruta | Descripción |
+| :--- | :--- | :--- |
+| **POST** | `/vuelos` | Crear un nuevo vuelo. |
+| **GET** | `/vuelos` | Listar vuelos activos (con filtros). |
+| **GET** | `/vuelos/:id` | Obtener detalle completo de un vuelo. |
+| **PATCH** | `/vuelos/:id` | Actualizar estado o fecha de un vuelo. |
+| **PATCH** | `/vuelos/:id/cancelar` | **Baja lógica (Soft Delete)**: Desactiva el vuelo. |
+| **POST** | `/vuelos/aviones` | Registrar nueva aeronave en la flota. |
+| **POST** | `/vuelos/tripulacion` | Registrar nuevo personal operativo. |
+
+
+
+### **Validaciones de Negocio Implementadas**
+1.  **Fechas**: Solo se permiten vuelos con fechas futuras y válidas.
+2.  **Pasajeros**: Validación de pasaportes únicos por vuelo y en vuelos activos simultáneos.
+3.  **Baja Lógica**: El campo `activo` pasa a `false`, permitiendo que el vuelo deje de aparecer en listados sin ser borrado físicamente.
+4.  **Asignación de Recursos**: Solo aviones en estado "Disponible" pueden asignarse a nuevos vuelos.
+
+---
+
+## 📈 Evolución del Proyecto (Versiones)
+
+### **Versión 1: Frontend Base (React)**
+Diseño de la interfaz de usuario con React y Tailwind. Implementación del listado principal y navegación mediante React Router.
+
+### **Versión 2: Service Vuelo + MongoDB**
+Conexión del backend **NestJS** con **MongoDB**.
+* *Explicación*: Se habilitó la persistencia real de los vuelos. En esta etapa se implementó el CRUD básico, permitiendo que los datos sobrevivan al reinicio del servidor.
+
+### **Versión 3: Módulos de Clientes y Recursos**
+Integración de los módulos de **Aviones** y **Tripulantes** dentro del servicio de vuelos.
+* *Explicación*: Se expandió la lógica para gestionar la flota y el personal. Se añadió el atajo de teclado `Ctrl + Shift + C` para que los operadores accedan rápidamente a la vista de clientes de forma independiente.
+
+### **Versión 4: Suite de Pruebas (Quality Assurance)**
+Implementación de la pirámide de pruebas.
+* *Explicación*: Se desarrollaron **Tests Unitarios** en NestJS para asegurar que la lógica de cancelación y filtrado no falle, y **Tests E2E con Cypress** para garantizar que el flujo del usuario sea impecable.
+
+
+---
+
+## 🚀 Instalación y Ejecución
+
+### **1. Backend (vuelos)**
+cd vuelos
+npm install
+npm run dev
+Corre en: http://localhost:3000
+
+###***2. Backend (clientes)**
+cd clientes
+npm install 
+npm run dev
+Corre en: http://localhost:4000    
+
+### **3. Frontend (front)**
+cd front
+npm install
+npm run dev
+Corre en: http://localhost:5173
+
+✅ Estado del Examen (Casos)
+Caso N° 7 (Unitarios): Validados con npm run test en el backend.
+
+Caso N° 8 (E2E): Flujo completo validado con npx cypress run en el frontend.
